@@ -14,7 +14,9 @@
       "Bash(pnpm lint:*)",
       "WebSearch",
       "Bash(xargs -I {} sh -c 'echo \"\"{}\"\"; grep -c \"\"^export\"\" {} | xargs -I @ echo \"\"@\"\"')",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

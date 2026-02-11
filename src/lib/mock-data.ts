@@ -20,7 +20,7 @@ export interface Folder {
   emoji: string;
 }
 
-type ToolKey = "quiz" | "flashcards" | "fill" | "mindmap" | "podcast";
+export type ToolKey = "quiz" | "flashcards" | "fill" | "mindmap" | "podcast";
 
 export interface ChatTool {
   name: string;

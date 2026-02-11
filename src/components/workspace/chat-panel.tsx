@@ -19,6 +19,7 @@ import {
   suggestions,
   mockAiResponses,
   toolResponses,
+  type ToolKey,
 } from "@/lib/mock-data";
 
 interface ChatPanelProps {
@@ -65,7 +66,7 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
       timeoutRef.current = setTimeout(() => {
         const response =
           aiResponse ??
-          (mockAiResponses as Record<string, string>)[text] ??
+          mockAiResponses[text as keyof typeof mockAiResponses] ??
           mockAiResponses.default;
         setMessages((prev) => [...prev, { role: "ai", text: response }]);
         setIsTyping(false);
@@ -87,11 +88,11 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
     sendMessage(suggestion);
   };
 
-  const handleToolClick = (toolKey: string, toolName: string) => {
+  const handleToolClick = (toolKey: ToolKey, toolName: string) => {
     setActiveTool((prev) => (prev === toolKey ? null : toolKey));
     sendMessage(
       `Start ${toolName}`,
-      (toolResponses as Record<string, string>)[toolKey]
+      toolResponses[toolKey]
     );
   };
 
