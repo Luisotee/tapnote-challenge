@@ -58,9 +58,6 @@
   --color-tool-mindmap: #14B8A6;
   --color-tool-podcast: #EC4899;
 
-  --color-folder-medicine: #EF4444;
-  --color-folder-sociology: #3B82F6;
-  --color-folder-chemistry: #EAB308;
 }
 
 :root {
@@ -99,11 +96,11 @@
 }
 
 .dark {
-  --background: #07040F;
+  --background: var(--color-tapnote-deep);
   --foreground: rgba(255, 255, 255, 0.9);
-  --card: #110D1B;
+  --card: var(--color-tapnote-card);
   --card-foreground: rgba(255, 255, 255, 0.9);
-  --popover: #110D1B;
+  --popover: var(--color-tapnote-card);
   --popover-foreground: rgba(255, 255, 255, 0.9);
   --primary: #7C3AED;
   --primary-foreground: #ffffff;
@@ -122,13 +119,13 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: #0D0A14;
+  --sidebar: var(--color-tapnote-sidebar);
   --sidebar-foreground: rgba(255, 255, 255, 0.9);
   --sidebar-primary: #7C3AED;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #1A1525;
   --sidebar-accent-foreground: rgba(255, 255, 255, 0.9);
-  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-border: var(--color-tapnote-border);
   --sidebar-ring: #7C3AED;
 }
 
