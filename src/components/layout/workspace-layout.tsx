@@ -11,6 +11,7 @@ import {
 } from "@/components/workspace/adjust-workspace-modal";
 import { LayoutGrid, ChevronDown, ArrowLeft, X } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -107,9 +108,10 @@ export function WorkspaceLayout() {
               <LayoutGrid className="h-3.5 w-3.5" />
               Adjust workspace
               <ChevronDown
-                className={`h-3 w-3 transition-transform ${
-                  adjustWorkspaceOpen ? "rotate-180" : ""
-                }`}
+                className={cn(
+                  "h-3 w-3 transition-transform",
+                  adjustWorkspaceOpen && "rotate-180"
+                )}
               />
             </Button>
           </AdjustWorkspaceModal>

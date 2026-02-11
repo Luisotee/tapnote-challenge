@@ -23,16 +23,22 @@ export function PdfViewer() {
   const [numPages, setNumPages] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(100);
 
+  const [error, setError] = useState(false);
+
   useEffect(() => {
-    import("react-pdf").then((mod) => {
-      mod.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
-      setPdf({
-        Document: mod.Document as unknown as ComponentType<
-          Record<string, unknown>
-        >,
-        Page: mod.Page as unknown as ComponentType<Record<string, unknown>>,
-      });
-    });
+    import("react-pdf")
+      .then((mod) => {
+        mod.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
+        // Double cast needed: react-pdf exports class components whose props
+        // don't align with the generic ComponentType<Record<string, unknown>>.
+        setPdf({
+          Document: mod.Document as unknown as ComponentType<
+            Record<string, unknown>
+          >,
+          Page: mod.Page as unknown as ComponentType<Record<string, unknown>>,
+        });
+      })
+      .catch(() => setError(true));
   }, []);
 
   const onDocumentLoadSuccess = useCallback(
@@ -46,6 +52,14 @@ export function PdfViewer() {
     setZoomLevel((prev) => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
   const handleZoomIn = () =>
     setZoomLevel((prev) => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
+
+  if (error) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <span className="text-xs text-destructive">Failed to load PDF viewer</span>
+      </div>
+    );
+  }
 
   if (!pdf) {
     return (

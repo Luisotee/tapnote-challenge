@@ -27,6 +27,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { noteData } from "@/lib/mock-data";
 
+const tabTriggerClasses =
+  "rounded-full px-3 py-1 text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=inactive]:bg-white/5";
+
 const PdfViewer = dynamic(
   () => import("./pdf-viewer").then((m) => ({ default: m.PdfViewer })),
   {
@@ -62,10 +65,14 @@ export function SourcePanel({
   };
 
   const handleCopy = async (text: string, tabId: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopiedTab(tabId);
-    toast.success("Copied to clipboard");
-    setTimeout(() => setCopiedTab(null), 2000);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedTab(tabId);
+      toast.success("Copied to clipboard");
+      setTimeout(() => setCopiedTab(null), 2000);
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
   };
 
   return (
@@ -96,7 +103,7 @@ export function SourcePanel({
               <h2 className="text-lg font-semibold text-foreground">
                 {noteName}
               </h2>
-              <button onClick={() => setIsRenaming(true)}>
+              <button onClick={() => setIsRenaming(true)} aria-label="Rename note">
                 <Pencil className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
               </button>
             </div>
@@ -163,22 +170,13 @@ export function SourcePanel({
       >
         <div className="px-4 pt-3">
           <TabsList className="bg-transparent h-auto p-0 gap-1">
-            <TabsTrigger
-              value="document"
-              className="rounded-full px-3 py-1 text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=inactive]:bg-white/5"
-            >
+            <TabsTrigger value="document" className={tabTriggerClasses}>
               Document
             </TabsTrigger>
-            <TabsTrigger
-              value="transcription"
-              className="rounded-full px-3 py-1 text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=inactive]:bg-white/5"
-            >
+            <TabsTrigger value="transcription" className={tabTriggerClasses}>
               Transcription
             </TabsTrigger>
-            <TabsTrigger
-              value="notetext"
-              className="rounded-full px-3 py-1 text-sm data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=inactive]:bg-white/5"
-            >
+            <TabsTrigger value="notetext" className={tabTriggerClasses}>
               Note text
             </TabsTrigger>
           </TabsList>
@@ -218,7 +216,7 @@ export function SourcePanel({
             </Button>
           </div>
           <ScrollArea className="flex-1 h-[calc(100%-2rem)]">
-            <p className="text-sm leading-relaxed text-foreground/70">
+            <p className="text-sm leading-relaxed text-foreground/80">
               {noteData.transcription}
             </p>
           </ScrollArea>
@@ -252,7 +250,7 @@ export function SourcePanel({
             </Button>
           </div>
           <ScrollArea className="flex-1 h-[calc(100%-2rem)]">
-            <p className="text-sm leading-relaxed text-foreground/70">
+            <p className="text-sm leading-relaxed text-foreground/80">
               {noteData.noteText}
             </p>
           </ScrollArea>

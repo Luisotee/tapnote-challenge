@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   X,
   Send,
@@ -10,6 +10,7 @@ import {
   Brain,
   Mic,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,6 +19,7 @@ import {
   suggestions,
   mockAiResponses,
   toolResponses,
+  type ToolKey,
 } from "@/lib/mock-data";
 
 interface ChatPanelProps {
@@ -43,37 +45,55 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const sendMessage = (text: string, aiResponse?: string) => {
-    if (!text.trim()) return;
-    setMessages((prev) => [...prev, { role: "user", text }]);
-    setInputValue("");
-    setIsTyping(true);
-    setTimeout(() => {
-      const response =
-        aiResponse ?? mockAiResponses[text] ?? mockAiResponses.default;
-      setMessages((prev) => [...prev, { role: "ai", text: response }]);
-      setIsTyping(false);
-    }, 1000);
-  };
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const sendMessage = useCallback(
+    (text: string, aiResponse?: string) => {
+      if (!text.trim()) return;
+      setMessages((prev) => [...prev, { role: "user", text }]);
+      setInputValue("");
+      setIsTyping(true);
+      timeoutRef.current = setTimeout(() => {
+        const response =
+          aiResponse ??
+          mockAiResponses[text as keyof typeof mockAiResponses] ??
+          mockAiResponses.default;
+        setMessages((prev) => [...prev, { role: "ai", text: response }]);
+        setIsTyping(false);
+      }, 1000);
+    },
+    []
+  );
 
   const handleSend = () => sendMessage(inputValue);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") handleSend();
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     sendMessage(suggestion);
   };
 
-  const handleToolClick = (toolKey: string, toolName: string) => {
+  const handleToolClick = (toolKey: ToolKey, toolName: string) => {
     setActiveTool((prev) => (prev === toolKey ? null : toolKey));
-    sendMessage(`Start ${toolName}`, toolResponses[toolKey]);
+    sendMessage(
+      `Start ${toolName}`,
+      toolResponses[toolKey]
+    );
   };
 
   const hasMessages = messages.length > 0;
@@ -111,11 +131,10 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
                   return (
                     <button
                       key={tool.key}
-                      className={`flex items-center gap-2 rounded-xl bg-white/5 px-4 py-3 text-sm text-foreground transition-all hover:bg-white/10 ${
-                        activeTool === tool.key
-                          ? "ring-2 ring-primary"
-                          : ""
-                      }`}
+                      className={cn(
+                        "flex items-center gap-2 rounded-xl bg-white/5 px-4 py-3 text-sm text-foreground transition-all hover:bg-white/10",
+                        activeTool === tool.key && "ring-2 ring-primary"
+                      )}
                       onClick={() => handleToolClick(tool.key, tool.name)}
                     >
                       <span
@@ -138,21 +157,22 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                  className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
+                    className={cn(
+                      "max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-primary/20 text-foreground"
                         : "bg-white/5 text-foreground/80"
-                    }`}
+                    )}
                   >
                     {msg.text}
                   </div>
                 </div>
               ))}
               {isTyping && (
-                <div className="flex justify-start">
+                <div className="flex justify-start" role="status" aria-label="AI is typing">
                   <div className="bg-white/5 rounded-2xl px-4 py-3 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.3s]" />
                     <span className="h-1.5 w-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.15s]" />
@@ -196,11 +216,12 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
           <Button
             variant="ghost"
             size="icon"
-            className={`absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-white/5 ${
+            className={cn(
+              "absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-white/5",
               inputValue.trim()
                 ? "text-primary hover:text-primary"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+            )}
             onClick={handleSend}
           >
             <Send className="h-3 w-3" />
