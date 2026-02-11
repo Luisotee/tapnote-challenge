@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, type ComponentType } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 
 // No top-level react-pdf imports — they use DOMMatrix which breaks SSR.
 // We lazy-load everything inside useEffect instead.
@@ -14,10 +13,15 @@ interface PdfModules {
   Page: ComponentType<Record<string, unknown>>;
 }
 
+const BASE_WIDTH = 380;
+const MIN_ZOOM = 50;
+const MAX_ZOOM = 200;
+const ZOOM_STEP = 25;
+
 export function PdfViewer() {
   const [pdf, setPdf] = useState<PdfModules | null>(null);
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState(100);
 
   useEffect(() => {
     Promise.all([
@@ -27,7 +31,9 @@ export function PdfViewer() {
     ]).then(([mod]) => {
       mod.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
       setPdf({
-        Document: mod.Document as unknown as ComponentType<Record<string, unknown>>,
+        Document: mod.Document as unknown as ComponentType<
+          Record<string, unknown>
+        >,
         Page: mod.Page as unknown as ComponentType<Record<string, unknown>>,
       });
     });
@@ -39,6 +45,11 @@ export function PdfViewer() {
     },
     []
   );
+
+  const handleZoomOut = () =>
+    setZoomLevel((prev) => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
+  const handleZoomIn = () =>
+    setZoomLevel((prev) => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
 
   if (!pdf) {
     return (
@@ -59,17 +70,21 @@ export function PdfViewer() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 text-muted-foreground hover:text-foreground hover:bg-white/5"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground hover:bg-white/5 disabled:opacity-30"
+            onClick={handleZoomOut}
+            disabled={zoomLevel <= MIN_ZOOM}
           >
             <Minus className="h-3 w-3" />
           </Button>
           <span className="text-xs text-muted-foreground min-w-[36px] text-center">
-            100%
+            {zoomLevel}%
           </span>
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 text-muted-foreground hover:text-foreground hover:bg-white/5"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground hover:bg-white/5 disabled:opacity-30"
+            onClick={handleZoomIn}
+            disabled={zoomLevel >= MAX_ZOOM}
           >
             <Plus className="h-3 w-3" />
           </Button>
@@ -90,21 +105,19 @@ export function PdfViewer() {
           }
         >
           <div className="space-y-3 pr-2">
-            {Array.from({ length: numPages }, (_, i) => i + 1).map(
-              (page) => (
-                <div
-                  key={page}
-                  className="rounded-sm overflow-hidden shadow-lg"
-                >
-                  <Page
-                    pageNumber={page}
-                    width={380}
-                    renderTextLayer={false}
-                    renderAnnotationLayer={false}
-                  />
-                </div>
-              )
-            )}
+            {Array.from({ length: numPages }, (_, i) => i + 1).map((page) => (
+              <div
+                key={page}
+                className="rounded-sm overflow-hidden shadow-lg"
+              >
+                <Page
+                  pageNumber={page}
+                  width={Math.round(BASE_WIDTH * (zoomLevel / 100))}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                />
+              </div>
+            ))}
           </div>
         </Document>
       </ScrollArea>

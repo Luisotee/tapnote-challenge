@@ -25,7 +25,7 @@ function SectionBadge({
   isOpen: boolean;
 }) {
   return (
-    <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-primary">
+    <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
       <Icon className="h-3 w-3" />
       {label}
       {isOpen ? (
@@ -55,13 +55,13 @@ export function NotePanel({ onClose }: NotePanelProps) {
 
       <ScrollArea className="flex-1 p-6">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-xl font-bold text-foreground text-center mb-6 pr-8">
+          <h1 className="text-2xl font-bold text-foreground text-center mb-6 pr-8">
             {noteData.title}
           </h1>
 
           {/* Overview Section */}
           <Collapsible open={overviewOpen} onOpenChange={setOverviewOpen}>
-            <CollapsibleTrigger className="mb-3">
+            <CollapsibleTrigger className="mb-3 w-full flex justify-center">
               <SectionBadge
                 icon={CheckCircle}
                 label="Overview"
@@ -77,7 +77,7 @@ export function NotePanel({ onClose }: NotePanelProps) {
 
           {/* Key Insights Section */}
           <Collapsible open={insightsOpen} onOpenChange={setInsightsOpen}>
-            <CollapsibleTrigger className="mb-3">
+            <CollapsibleTrigger className="mb-3 w-full flex justify-center">
               <SectionBadge
                 icon={Lightbulb}
                 label="Key Insights"
@@ -101,7 +101,7 @@ export function NotePanel({ onClose }: NotePanelProps) {
 
           {/* Detailed Breakdown Section */}
           <Collapsible open={breakdownOpen} onOpenChange={setBreakdownOpen}>
-            <CollapsibleTrigger className="mb-3">
+            <CollapsibleTrigger className="mb-3 w-full flex justify-center">
               <SectionBadge
                 icon={List}
                 label="Detailed Breakdown"
@@ -118,7 +118,7 @@ export function NotePanel({ onClose }: NotePanelProps) {
           {/* Additional Sections */}
           {noteData.sections.map((section, i) => (
             <div key={i} className="mb-6">
-              <h2 className="text-base font-semibold text-foreground mb-3">
+              <h2 className="text-lg font-semibold text-foreground mb-3">
                 {section.title}
               </h2>
               <ul className="space-y-2">

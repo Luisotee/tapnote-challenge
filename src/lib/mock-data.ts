@@ -37,9 +37,9 @@ export const noteData = {
 };
 
 export const folders = [
-  { name: "Medicine", color: "bg-folder-medicine" },
-  { name: "Sociology", color: "bg-folder-sociology" },
-  { name: "Chemistry", color: "bg-folder-chemistry" },
+  { name: "Medicine", emoji: "🔬" },
+  { name: "Sociology", emoji: "📚" },
+  { name: "Chemistry", emoji: "🧪" },
 ];
 
 export const chatTools = [
@@ -62,5 +62,27 @@ export const workspaceTools = [
 export const suggestions = [
   "Most important points",
   "Short summary",
-  "Short summa...",
+  "Explain simply",
 ];
+
+export const mockAiResponses: Record<string, string> = {
+  default:
+    "That's a great question! Based on the notes about Roman history, the rise of Rome was driven by its strategic location, open immigration policies, and military innovations. Would you like me to elaborate on any specific aspect?",
+  "Most important points":
+    "Here are the most important points from the note:\n\n1. Rome grew from a small Latin settlement by the Tiber into the largest metropolitan city of the ancient world\n2. Rome's open-door policy for migrants was key to its growth\n3. The Romans borrowed heavily from Etruscan and Greek cultures\n4. Seven legendary kings each contributed lasting institutions (calendar, sewer system, Capitolium)",
+  "Short summary":
+    "Rome evolved from a tiny tribal settlement of the Latins by the river Tiber into the dominant power of the ancient world. Its strategic location at trade crossroads, welcoming immigration policy, and cultural borrowing from the Etruscans and Greeks fueled its rise.",
+  "Explain simply":
+    "Think of Rome like a small town that grew into a huge city. It was in a great spot for trading, it welcomed everyone who wanted to live there, and it learned the best ideas from its neighbors. Over time, these advantages helped it become the most powerful place in the ancient world.",
+};
+
+export const toolResponses: Record<string, string> = {
+  quiz: "Let's test your knowledge! Here's a quiz question:\n\n**Q: What was the name of the Roman peace that served as the first example of globalization?**\n\nA) Pax Augusta\nB) Pax Romana\nC) Pax Mediterranea\nD) Pax Imperialis",
+  flashcards:
+    "Here's your first flashcard:\n\n**Front:** Who were the legendary founders of Rome?\n\n*Tap to reveal the answer...*\n\n**Back:** Romulus and Remus, the great-grandchildren of the Trojan hero Aeneas. According to legend, they were nursed by a she-wolf.",
+  fill: "Fill in the blanks:\n\nRome has been an open City, a safe haven for outcasts. Rome offered migrants a unique opportunity to become fully _______ citizens. This will make Rome the largest _______ city of the ancient world.",
+  mindmap:
+    "Here's a mind map structure for this note:\n\n**Rome's Rise**\n├── Geography: Tiber River, Seven Hills\n├── Neighbors: Etruscans (north), Greek colonies (south)\n├── Culture: Latin alphabet, borrowed from Etruscans\n├── Government: Seven Kings era\n└── Legacy: Aqueducts, bridges, gladiatorial games",
+  podcast:
+    'Generating a podcast-style summary...\n\n"Welcome to TapNote Audio! Today we\'re exploring the fascinating rise of Rome. Picture this: a tiny tribal settlement by the river Tiber, surrounded by the mysterious Etruscans to the north and wealthy Greek colonies to the south..."',
+};

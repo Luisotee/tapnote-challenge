@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sidebar } from "./sidebar";
-import { TopBar } from "./top-bar";
+import { AppSidebar } from "./sidebar";
 import { SourcePanel } from "@/components/workspace/source-panel";
 import { NotePanel } from "@/components/workspace/note-panel";
 import { ChatPanel } from "@/components/workspace/chat-panel";
@@ -10,11 +9,27 @@ import {
   AdjustWorkspaceModal,
   type PanelType,
 } from "@/components/workspace/adjust-workspace-modal";
-import { LayoutGrid, ChevronDown } from "lucide-react";
+import { LayoutGrid, ChevronDown, ArrowLeft, X } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function WorkspaceLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [visiblePanels, setVisiblePanels] = useState<PanelType[]>([
     "source",
     "note",
@@ -36,88 +51,45 @@ export function WorkspaceLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-tapnote-deep">
-      {/* Sidebar */}
-      <div
-        className="flex-shrink-0 transition-all duration-300"
-        style={{ width: sidebarOpen ? 240 : 48 }}
-      >
-        <Sidebar
-          isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen(!sidebarOpen)}
-        />
-      </div>
-
-      {/* Main content area */}
-      <div className="flex flex-1 flex-col min-w-0">
-        {/* Top bar - with adjust workspace popover embedded */}
+    <SidebarProvider
+      defaultOpen={false}
+      style={{ "--sidebar-width": "240px" } as React.CSSProperties}
+    >
+      <AppSidebar />
+      <SidebarInset className="bg-page-gradient">
+        {/* Top bar */}
         <div className="flex h-12 items-center justify-between border-b border-border bg-tapnote-deep px-3">
           {/* Left section of top bar */}
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="4" x2="20" y1="12" y2="12" />
-                <line x1="4" x2="20" y1="6" y2="6" />
-                <line x1="4" x2="20" y1="18" y2="18" />
-              </svg>
-            </Button>
-
-            <Button
-              variant="ghost"
               size="sm"
               className="gap-1.5 rounded-full bg-white/5 px-3 text-xs text-muted-foreground hover:text-foreground hover:bg-white/10"
+              onClick={() => toast.info("Navigating back...")}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m12 19-7-7 7-7" />
-              </svg>
+              <ArrowLeft className="h-3.5 w-3.5" />
               Back
             </Button>
 
-            <nav className="flex items-center gap-1 text-xs">
-              <span className="text-muted-foreground hover:text-foreground cursor-pointer">
-                Notes
-              </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-muted-foreground"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-              <span className="text-foreground">Roman Legacy</span>
-            </nav>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toast.info("Navigating to Notes...");
+                    }}
+                  >
+                    Notes
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Roman Legacy</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
 
           {/* Center - Adjust workspace button with popover */}
@@ -148,26 +120,33 @@ export function WorkspaceLayout() {
               variant="ghost"
               size="icon"
               className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5"
+              onClick={() => setVisiblePanels([])}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
+              <X className="h-4 w-4" />
             </Button>
 
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20">
-              <span className="text-xs font-medium text-primary">U</span>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 cursor-pointer transition-colors hover:bg-primary/30">
+                  <span className="text-xs font-medium text-primary">U</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="border-border bg-tapnote-card"
+                align="end"
+              >
+                <DropdownMenuItem className="text-xs">
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs">
+                  Preferences
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-xs">
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -196,7 +175,7 @@ export function WorkspaceLayout() {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
