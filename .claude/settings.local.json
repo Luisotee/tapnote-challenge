@@ -12,7 +12,9 @@
       "mcp__shadcn__view_items_in_registries",
       "mcp__shadcn__get_item_examples_from_registries",
       "Bash(pnpm lint:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(xargs -I {} sh -c 'echo \"\"{}\"\"; grep -c \"\"^export\"\" {} | xargs -I @ echo \"\"@\"\"')",
+      "Bash(grep:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

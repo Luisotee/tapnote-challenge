@@ -1,4 +1,39 @@
-export const noteData = {
+interface NoteSection {
+  title: string;
+  points: string[];
+}
+
+interface NoteData {
+  title: string;
+  noteName: string;
+  date: string;
+  breadcrumb: string[];
+  overview: string;
+  keyInsights: string[];
+  sections: NoteSection[];
+  transcription: string;
+  noteText: string;
+}
+
+export interface Folder {
+  name: string;
+  emoji: string;
+}
+
+type ToolKey = "quiz" | "flashcards" | "fill" | "mindmap" | "podcast";
+
+export interface ChatTool {
+  name: string;
+  colorClass: string;
+  key: ToolKey;
+}
+
+export interface WorkspaceTool {
+  name: string;
+  key: string;
+}
+
+export const noteData: NoteData = {
   title: "The Rise of Rome: From Village to Empire",
   noteName: "Roman Legacy",
   date: "26 Jan 2026 y. 10:22 AM",
@@ -12,21 +47,20 @@ export const noteData = {
   ],
   sections: [
     {
-      title: "Importance of a Great Idea",
+      title: "Origins and Geography",
       points: [
-        "Startups require a great idea, product, team, and execution for success.",
-        "A strong passion for solving a particular problem is essential for founding a startup.",
-        "The importance of a startup idea is often underestimated in favor of execution and adaptability.",
+        "Rome began as a tiny tribal settlement of the Latins by the river Tiber, strategically positioned between Etruscan and Greek territories.",
+        "Its location at the crossroads of major trade routes gave it a natural advantage for growth and cultural exchange.",
+        "The city's famous Seven Hills provided natural defensive positions that aided early settlement security.",
       ],
     },
     {
-      title: "Role of Passion",
+      title: "Cultural Borrowing and the Seven Kings",
       points: [
-        "Startups require a great idea, product, team, and execution for success.",
-        "A strong passion for solving a particular problem is essential for founding a startup.",
-        "Startups require a great idea, product, team, and execution for success.",
-        "A strong passion for solving a particular problem is essential for founding a startup.",
-        "Startups require a great idea, product, team, and execution for success.",
+        "Much of what Romans became famous for — aqueducts, bridges, and gladiatorial games — was borrowed from the Etruscans.",
+        "The Latin alphabet was adapted from Greek letters by the Etruscans, then adopted by Rome.",
+        "Seven legendary kings each left a beneficial legacy: a calendar, a sewer system, and the Capitolium temple to Jupiter.",
+        "Rome's open-door policy welcomed outcasts, runaway slaves, and migrants, making it the largest metropolitan city of the ancient world.",
       ],
     },
   ],
@@ -36,13 +70,13 @@ export const noteData = {
     "here are the letters the Romans gave us and here are the countries whose languages derive from Latin today they cover half the World As for the ancient Romans the boundaries of their state encompassed their entire civilization the Roman peace or Pax Romana serves as the first example of globalization we'll take a walk across 13 centuries of the Roman history and yes those numerals are also a Roman Legacy what is Rome a city on Seven Hills capital of Italy but that is today and 2,000 years ago there is it is another thousand years ago there a tiny tribal settlement of the Latins by the river Tyber how did this manage to conquer the world first it was lucky with its neighbors to the north the atrams of modern Tuscan a mysterious people whose language has never been fully deciphered to the South Greek colonies these peoples all traded with each other it was at the crossroads of their trade routes that Rome appeared from the very start Rome has been an open City a safe haven for outcasts murderers runaway slaves Rome offered migrants a unique opportunity to become fully fledged citizens this will make Rome the largest metropolitan city of the ancient world the Romans themselves believed they were descendants of refugees from the Middle East who had survived the Trojan War Romulus and Remus were the great grandchildren of the Trojan hero Aeneas nursed by an Italian She Wolf the brothers quarreled where to sight the future world Capital Romulus killed Remus gave his name to the city and became its first ruler as Legend has it there were seven Kings Each of which enjoyed a lengthy Reign and left some beneficial Legacy a calendar a SE system or the capitolium a temple to the senior God Jupiter much of what the Romans later became famous for Aqueducts Bridges perhaps even the gladiatorial games were borrowed from the atrans the people had invented the Latin alphabet by adapting the Greek letters for their own needs it's not surprising that their last kings were at truscan Rome borrowed her",
 };
 
-export const folders = [
+export const folders: Folder[] = [
   { name: "Medicine", emoji: "🔬" },
   { name: "Sociology", emoji: "📚" },
   { name: "Chemistry", emoji: "🧪" },
 ];
 
-export const chatTools = [
+export const chatTools: ChatTool[] = [
   { name: "Quiz", colorClass: "bg-tool-quiz", key: "quiz" },
   { name: "Flashcards", colorClass: "bg-tool-flashcards", key: "flashcards" },
   { name: "Fill the blank", colorClass: "bg-tool-fill", key: "fill" },
@@ -50,7 +84,7 @@ export const chatTools = [
   { name: "Podcast", colorClass: "bg-tool-podcast", key: "podcast" },
 ];
 
-export const workspaceTools = [
+export const workspaceTools: WorkspaceTool[] = [
   { name: "Chat with AI", key: "chat" },
   { name: "Quiz", key: "quiz" },
   { name: "Flashcards", key: "flashcards" },
@@ -63,9 +97,13 @@ export const suggestions = [
   "Most important points",
   "Short summary",
   "Explain simply",
-];
+] as const;
 
-export const mockAiResponses: Record<string, string> = {
+type SuggestionKey = (typeof suggestions)[number];
+type AiResponseKey = SuggestionKey | "default";
+type ToolResponseKey = ToolKey;
+
+export const mockAiResponses: Record<AiResponseKey, string> = {
   default:
     "That's a great question! Based on the notes about Roman history, the rise of Rome was driven by its strategic location, open immigration policies, and military innovations. Would you like me to elaborate on any specific aspect?",
   "Most important points":
@@ -76,7 +114,7 @@ export const mockAiResponses: Record<string, string> = {
     "Think of Rome like a small town that grew into a huge city. It was in a great spot for trading, it welcomed everyone who wanted to live there, and it learned the best ideas from its neighbors. Over time, these advantages helped it become the most powerful place in the ancient world.",
 };
 
-export const toolResponses: Record<string, string> = {
+export const toolResponses: Record<ToolResponseKey, string> = {
   quiz: "Let's test your knowledge! Here's a quiz question:\n\n**Q: What was the name of the Roman peace that served as the first example of globalization?**\n\nA) Pax Augusta\nB) Pax Romana\nC) Pax Mediterranea\nD) Pax Imperialis",
   flashcards:
     "Here's your first flashcard:\n\n**Front:** Who were the legendary founders of Rome?\n\n*Tap to reveal the answer...*\n\n**Back:** Romulus and Remus, the great-grandchildren of the Trojan hero Aeneas. According to legend, they were nursed by a she-wolf.",

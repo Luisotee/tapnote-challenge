@@ -43,7 +43,7 @@ export function NotePanel({ onClose }: NotePanelProps) {
   const [breakdownOpen, setBreakdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-1 flex-col rounded-2xl border border-border bg-tapnote-card overflow-hidden relative">
+    <div className="flex flex-1 flex-col rounded-2xl border border-border bg-card-gradient overflow-hidden relative">
       <Button
         variant="ghost"
         size="icon"
