@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { X, ChevronDown, ChevronUp, CheckCircle, Lightbulb, List } from "lucide-react";
+import {
+  X,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle,
+  Lightbulb,
+  List,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -110,7 +117,8 @@ export function NotePanel({ onClose }: NotePanelProps) {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <p className="text-sm leading-relaxed text-foreground/80 mb-6">
-                A detailed breakdown of the key concepts and historical events that shaped Rome&apos;s rise to power.
+                A detailed breakdown of the key concepts and historical events
+                that shaped Rome&apos;s rise to power.
               </p>
             </CollapsibleContent>
           </Collapsible>

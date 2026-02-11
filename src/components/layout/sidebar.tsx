@@ -27,7 +27,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { setOpen } = useSidebar();
 
   const filteredFolders = folders.filter((f) =>
-    f.name.toLowerCase().includes(searchQuery.toLowerCase())
+    f.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -117,7 +117,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                   isActive={activeFolder === folder.name}
                   onClick={() =>
                     setActiveFolder(
-                      activeFolder === folder.name ? null : folder.name
+                      activeFolder === folder.name ? null : folder.name,
                     )
                   }
                 >

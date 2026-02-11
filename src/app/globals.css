@@ -46,18 +46,17 @@
   --radius-4xl: calc(var(--radius) + 16px);
 
   /* TapNote custom colors */
-  --color-tapnote-deep: #07040F;
-  --color-tapnote-card: #110D1B;
-  --color-tapnote-sidebar: #0D0A14;
+  --color-tapnote-deep: #07040f;
+  --color-tapnote-card: #110d1b;
+  --color-tapnote-sidebar: #0d0a14;
   --color-tapnote-border: rgba(255, 255, 255, 0.06);
   --color-tapnote-hover: rgba(255, 255, 255, 0.04);
 
-  --color-tool-quiz: #EF4444;
-  --color-tool-flashcards: #8B5CF6;
-  --color-tool-fill: #3B82F6;
-  --color-tool-mindmap: #14B8A6;
-  --color-tool-podcast: #EC4899;
-
+  --color-tool-quiz: #ef4444;
+  --color-tool-flashcards: #8b5cf6;
+  --color-tool-fill: #3b82f6;
+  --color-tool-mindmap: #14b8a6;
+  --color-tool-podcast: #ec4899;
 }
 
 :root {
@@ -102,18 +101,18 @@
   --card-foreground: rgba(255, 255, 255, 0.9);
   --popover: var(--color-tapnote-card);
   --popover-foreground: rgba(255, 255, 255, 0.9);
-  --primary: #7C3AED;
+  --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #1A1525;
+  --secondary: #1a1525;
   --secondary-foreground: rgba(255, 255, 255, 0.9);
-  --muted: #1A1525;
+  --muted: #1a1525;
   --muted-foreground: rgba(255, 255, 255, 0.5);
-  --accent: #7C3AED;
+  --accent: #7c3aed;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.08);
-  --ring: #7C3AED;
+  --ring: #7c3aed;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -121,12 +120,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: var(--color-tapnote-sidebar);
   --sidebar-foreground: rgba(255, 255, 255, 0.9);
-  --sidebar-primary: #7C3AED;
+  --sidebar-primary: #7c3aed;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1A1525;
+  --sidebar-accent: #1a1525;
   --sidebar-accent-foreground: rgba(255, 255, 255, 0.9);
   --sidebar-border: var(--color-tapnote-border);
-  --sidebar-ring: #7C3AED;
+  --sidebar-ring: #7c3aed;
 }
 
 @layer base {
@@ -159,9 +158,13 @@
 
 /* Gradient backgrounds */
 .bg-page-gradient {
-  background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.15) 0%, #07040F 70%);
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(124, 58, 237, 0.15) 0%,
+    #07040f 70%
+  );
 }
 
 .bg-card-gradient {
-  background: linear-gradient(180deg, rgba(124, 58, 237, 0.12) 0%, #110D1B 40%);
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.12) 0%, #110d1b 40%);
 }

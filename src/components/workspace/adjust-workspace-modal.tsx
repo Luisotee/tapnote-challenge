@@ -58,13 +58,16 @@ export function AdjustWorkspaceModal({
           {blocks.map((block) => {
             const isActive = visiblePanels.includes(block.id);
             return (
-              <div key={block.id} className="flex flex-col items-center gap-1.5">
+              <div
+                key={block.id}
+                className="flex flex-col items-center gap-1.5"
+              >
                 <button
                   className={cn(
                     "flex h-14 w-14 items-center justify-center rounded-xl border transition-colors",
                     isActive
                       ? "border-primary bg-primary/20 text-primary"
-                      : "border-border bg-white/5 text-muted-foreground hover:bg-white/10"
+                      : "border-border bg-white/5 text-muted-foreground hover:bg-white/10",
                   )}
                   onClick={() => onTogglePanel(block.id)}
                 >
@@ -100,7 +103,7 @@ export function AdjustWorkspaceModal({
                     <span
                       className={cn(
                         "h-4 w-4 rounded-full",
-                        toolColors[tool.key] || "bg-primary"
+                        toolColors[tool.key] || "bg-primary",
                       )}
                     />
                     {tool.name}
@@ -108,9 +111,7 @@ export function AdjustWorkspaceModal({
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <span className="text-[10px] text-muted-foreground">
-              Add more
-            </span>
+            <span className="text-[10px] text-muted-foreground">Add more</span>
           </div>
         </div>
       </PopoverContent>

@@ -45,7 +45,7 @@ export function PdfViewer() {
     ({ numPages }: { numPages: number }) => {
       setNumPages(numPages);
     },
-    []
+    [],
   );
 
   const handleZoomOut = () =>
@@ -56,7 +56,9 @@ export function PdfViewer() {
   if (error) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <span className="text-xs text-destructive">Failed to load PDF viewer</span>
+        <span className="text-xs text-destructive">
+          Failed to load PDF viewer
+        </span>
       </div>
     );
   }
@@ -116,10 +118,7 @@ export function PdfViewer() {
         >
           <div className="space-y-3 pr-2">
             {Array.from({ length: numPages }, (_, i) => i + 1).map((page) => (
-              <div
-                key={page}
-                className="rounded-sm overflow-hidden shadow-lg"
-              >
+              <div key={page} className="rounded-sm overflow-hidden shadow-lg">
                 <Page
                   pageNumber={page}
                   width={Math.round(BASE_WIDTH * (zoomLevel / 100))}

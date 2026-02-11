@@ -57,23 +57,20 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
     };
   }, []);
 
-  const sendMessage = useCallback(
-    (text: string, aiResponse?: string) => {
-      if (!text.trim()) return;
-      setMessages((prev) => [...prev, { role: "user", text }]);
-      setInputValue("");
-      setIsTyping(true);
-      timeoutRef.current = setTimeout(() => {
-        const response =
-          aiResponse ??
-          mockAiResponses[text as keyof typeof mockAiResponses] ??
-          mockAiResponses.default;
-        setMessages((prev) => [...prev, { role: "ai", text: response }]);
-        setIsTyping(false);
-      }, 1000);
-    },
-    []
-  );
+  const sendMessage = useCallback((text: string, aiResponse?: string) => {
+    if (!text.trim()) return;
+    setMessages((prev) => [...prev, { role: "user", text }]);
+    setInputValue("");
+    setIsTyping(true);
+    timeoutRef.current = setTimeout(() => {
+      const response =
+        aiResponse ??
+        mockAiResponses[text as keyof typeof mockAiResponses] ??
+        mockAiResponses.default;
+      setMessages((prev) => [...prev, { role: "ai", text: response }]);
+      setIsTyping(false);
+    }, 1000);
+  }, []);
 
   const handleSend = () => sendMessage(inputValue);
 
@@ -90,10 +87,7 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
 
   const handleToolClick = (toolKey: ToolKey, toolName: string) => {
     setActiveTool((prev) => (prev === toolKey ? null : toolKey));
-    sendMessage(
-      `Start ${toolName}`,
-      toolResponses[toolKey]
-    );
+    sendMessage(`Start ${toolName}`, toolResponses[toolKey]);
   };
 
   const hasMessages = messages.length > 0;
@@ -133,7 +127,7 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
                       key={tool.key}
                       className={cn(
                         "flex items-center gap-2 rounded-xl bg-white/5 px-4 py-3 text-sm text-foreground transition-all hover:bg-white/10",
-                        activeTool === tool.key && "ring-2 ring-primary"
+                        activeTool === tool.key && "ring-2 ring-primary",
                       )}
                       onClick={() => handleToolClick(tool.key, tool.name)}
                     >
@@ -147,7 +141,6 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
                   );
                 })}
               </div>
-
             </>
           )}
 
@@ -157,14 +150,17 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}
+                  className={cn(
+                    "flex",
+                    msg.role === "user" ? "justify-end" : "justify-start",
+                  )}
                 >
                   <div
                     className={cn(
                       "max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-primary/20 text-foreground"
-                        : "bg-white/5 text-foreground/80"
+                        : "bg-white/5 text-foreground/80",
                     )}
                   >
                     {msg.text}
@@ -172,7 +168,11 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
                 </div>
               ))}
               {isTyping && (
-                <div className="flex justify-start" role="status" aria-label="AI is typing">
+                <div
+                  className="flex justify-start"
+                  role="status"
+                  aria-label="AI is typing"
+                >
                   <div className="bg-white/5 rounded-2xl px-4 py-3 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.3s]" />
                     <span className="h-1.5 w-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.15s]" />
@@ -220,7 +220,7 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
               "absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 hover:bg-white/5",
               inputValue.trim()
                 ? "text-primary hover:text-primary"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
             onClick={handleSend}
           >

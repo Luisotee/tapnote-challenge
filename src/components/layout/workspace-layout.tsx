@@ -41,9 +41,7 @@ export function WorkspaceLayout() {
 
   const togglePanel = (panel: PanelType) => {
     setVisiblePanels((prev) =>
-      prev.includes(panel)
-        ? prev.filter((p) => p !== panel)
-        : [...prev, panel]
+      prev.includes(panel) ? prev.filter((p) => p !== panel) : [...prev, panel],
     );
   };
 
@@ -110,7 +108,7 @@ export function WorkspaceLayout() {
               <ChevronDown
                 className={cn(
                   "h-3 w-3 transition-transform",
-                  adjustWorkspaceOpen && "rotate-180"
+                  adjustWorkspaceOpen && "rotate-180",
                 )}
               />
             </Button>
@@ -137,9 +135,7 @@ export function WorkspaceLayout() {
                 className="border-border bg-tapnote-card"
                 align="end"
               >
-                <DropdownMenuItem className="text-xs">
-                  Profile
-                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs">Profile</DropdownMenuItem>
                 <DropdownMenuItem className="text-xs">
                   Preferences
                 </DropdownMenuItem>

@@ -39,7 +39,7 @@ const PdfViewer = dynamic(
         <span className="text-xs text-muted-foreground">Loading PDF...</span>
       </div>
     ),
-  }
+  },
 );
 
 interface SourcePanelProps {
@@ -103,7 +103,10 @@ export function SourcePanel({
               <h2 className="text-lg font-semibold text-foreground">
                 {noteName}
               </h2>
-              <button onClick={() => setIsRenaming(true)} aria-label="Rename note">
+              <button
+                onClick={() => setIsRenaming(true)}
+                aria-label="Rename note"
+              >
                 <Pencil className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
               </button>
             </div>
@@ -222,10 +225,7 @@ export function SourcePanel({
           </ScrollArea>
         </TabsContent>
 
-        <TabsContent
-          value="notetext"
-          className="flex-1 p-4 pt-3 mt-0 min-h-0"
-        >
+        <TabsContent value="notetext" className="flex-1 p-4 pt-3 mt-0 min-h-0">
           <div className="flex items-center justify-between mb-3">
             <span className="text-base font-medium text-foreground">
               Note text
