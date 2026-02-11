@@ -24,11 +24,7 @@ export function PdfViewer() {
   const [zoomLevel, setZoomLevel] = useState(100);
 
   useEffect(() => {
-    Promise.all([
-      import("react-pdf"),
-      import("react-pdf/dist/Page/AnnotationLayer.css"),
-      import("react-pdf/dist/Page/TextLayer.css"),
-    ]).then(([mod]) => {
+    import("react-pdf").then((mod) => {
       mod.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
       setPdf({
         Document: mod.Document as unknown as ComponentType<
